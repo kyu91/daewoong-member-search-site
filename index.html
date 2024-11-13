@@ -6,26 +6,27 @@
 </head>
 <body>
   <h1>대웅펫 자문위원단 회원 검색</h1>
-  <h3>보안 문제상 이메일 전체를 입력 해 주셔야 검색이 올바르게 동작합니다.</h3>
-  <p><i>test1234@companyName.co.kr</i></p>
+  <h3>보안 문제상 이름과 이메일 모두 입력해야 검색이 올바르게 동작합니다.</h3>
+  <input type="text" id="name" placeholder="이름 입력">
   <input type="text" id="email" placeholder="이메일 입력">
   <button onclick="search()">검색</button>
   <p id="result"></p>
 
   <script>
     async function search() {
+      const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const resultElement = document.getElementById('result');
       
       // 검색 중 메시지 표시
-      resultElement.innerText = "검색중...조금만 기다려주세요🫡";
+      resultElement.innerText = "검색중... 조금만 기다려주세요🫡";
 
       try {
-        const response = await fetch(`https://script.google.com/macros/s/AKfycbxuNLvErfFxsySbeauxaeN068LMvl-XwEBBIf271X82zcM1dYjTj0Q58khhakUH7LqXMg/exec?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbxuNLvErfFxsySbeauxaeN068LMvl-XwEBBIf271X82zcM1dYjTj0Q58khhakUH7LqXMg/exec?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`);
         const result = await response.text();
         
         // 검색 완료 후 결과 표시
-        resultElement.innerText = result;
+        resultElement.innerHTML = result; // HTML 형식으로 결과 표시
       } catch (error) {
         resultElement.innerText = "오류가 발생했습니다. 다시 시도해주세요.";
       }
