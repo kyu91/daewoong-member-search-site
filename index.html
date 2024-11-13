@@ -3,16 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <title>대웅펫 자문위원단 회원 검색</title>
+  <style>
+    /* 기본 라이트 모드 스타일 */
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* 입력창 및 버튼 스타일 */
+    input[type="text"], button {
+      padding: 8px;
+      font-size: 16px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+
+    /* 다크 모드 스타일 */
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.dark-mode input[type="text"] {
+      background-color: #333333;
+      color: #ffffff;
+      border: 1px solid #555555;
+    }
+
+    body.dark-mode button {
+      background-color: #1E88E5;
+    }
+
+    /* 결과 텍스트 스타일 */
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h1>대웅펫 자문위원단 회원 검색</h1>
   <h3>보안 문제상 이름과 이메일 모두 입력해야 검색이 올바르게 동작합니다.</h3>
+
   <input type="text" id="name" placeholder="이름 입력">
   <input type="text" id="email" placeholder="이메일 입력">
   <button onclick="search()">검색</button>
   <p id="result"></p>
 
   <script>
+    // 시스템 설정에 따른 초기 모드 적용
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDarkScheme) {
+      document.body.classList.add("dark-mode");
+    }
+
+    // 검색 함수
     async function search() {
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
@@ -26,11 +81,18 @@
         const result = await response.text();
         
         // 검색 완료 후 결과 표시
-        resultElement.innerHTML = result; // HTML 형식으로 결과 표시
+        resultElement.innerHTML = result;
       } catch (error) {
         resultElement.innerText = "오류가 발생했습니다. 다시 시도해주세요.";
       }
     }
+
+    // Enter 키 입력 시 검색 함수 실행
+    document.getElementById('email').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        search();
+      }
+    });
   </script>
 </body>
 </html>
